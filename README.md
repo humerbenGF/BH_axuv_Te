@@ -1,2 +1,1 @@
-# BH_axuv_Te
-Reorganization of Xiande's code for PI3 Te generation from AXUV signals
+put the two folders ('mean value and uncertainty' and 'mean value and uncertianty- shots-19004-20470') under the same fodler with python code.

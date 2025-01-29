@@ -1,0 +1,3 @@
+T_Mylar_6point2um*T_Al_point_01um
+T_Mylar_13point02um*T_Al_point_012um
+T_Mylar_20um*T_Al_point_008um
