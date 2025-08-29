@@ -18,6 +18,7 @@ import math
 from lmfit import Model
 from scipy.optimize import curve_fit
 from scipy import integrate as spi
+import os
 
 def dedroop_signal(signal, time, tau):
 	dd_deriv = np.gradient(signal, time) + signal*(1./float(tau))
@@ -191,7 +192,7 @@ def axuv_Te_with_error(shot):
 
         data = gdt.fetch_data.run_query(q_options) # load the data
         axuv_my06, axuv_my13, axuv_my22, axuv_no_filter = data['waves']
-
+        
         #----filter the raw signal
         axuv_my06_sig=F_Mylar_6um*np.asarray(axuv_my06)
         axuv_my06_sig_filter=savgol_filter(np.asarray(np.asarray(axuv_my06_sig)), filter_points, filter_order, mode='nearest')
@@ -201,10 +202,11 @@ def axuv_Te_with_error(shot):
         axuv_my22_sig_filter=savgol_filter(np.asarray(np.asarray(axuv_my22_sig)), filter_points, filter_order, mode='nearest')
         axuv_no_filter_sig=F_Mylar_NO*np.asarray(axuv_no_filter)
         axuv_no_filter_sig_filter=savgol_filter(np.asarray(np.asarray(axuv_no_filter_sig)), filter_points, filter_order, mode='nearest')
+        
 
 
     t = axuv_my06.x_axis()
-    
+        
     
     # get the time from one of the raw signal channel
     
@@ -298,35 +300,35 @@ def axuv_Te_with_error(shot):
         # Ratio3=axuv_my22_sig/axuv_my13_sig
         
         
-        #fitcoe1_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\mean values\fit_coe_tan.npy')
-        #fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\mean values\fit_coe2_tan.npy')
-        #fitcoe3_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\mean values\fit_coe3_tan.npy')
+        #fitcoe1_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/mean_values/fit_coe_tan.npy')
+        #fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/mean_values/fit_coe2_tan.npy')
+        #fitcoe3_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/mean_values/fit_coe3_tan.npy')
         
-        #fitcoe1_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te1&Te2 error-plus\fit_coe_tan.npy')
-        #fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        #fitcoe1_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te1&Te2_error-plus/fit_coe_tan.npy')
+        #fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        #fitcoe1_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te1&T2 error-minus\fit_coe_tan.npy')
-        #fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te1&T2 error-minus\fit_coe2_tan.npy')
+        #fitcoe1_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te1&T2_error-minus/fit_coe_tan.npy')
+        #fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te1&T2_error-minus/fit_coe2_tan.npy')
         
         
-        #fitcoe3_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te3 error-plus\fit_coe3_tan.npy')
+        #fitcoe3_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te3_error-plus/fit_coe3_tan.npy')
 
-        #fitcoe3_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470\Te3 error-minus\fit_coe3_tan.npy')
+        #fitcoe3_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty - shots-19004-20470/Te3_error-minus/fit_coe3_tan.npy')
          
-        fitcoe1_load = np.load(r'mean value and uncertainty - shots-19004-20470\mean values\fit_coe_tan.npy')
-        fitcoe2_load = np.load(r'mean value and uncertainty - shots-19004-20470\mean values\fit_coe2_tan.npy')
-        fitcoe3_load = np.load(r'mean value and uncertainty - shots-19004-20470\mean values\fit_coe3_tan.npy')
+        fitcoe1_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/mean_values/fit_coe_tan.npy')
+        fitcoe2_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/mean_values/fit_coe2_tan.npy')
+        fitcoe3_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/mean_values/fit_coe3_tan.npy')
         
-        fitcoe1_p_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te1&Te2 error-plus\fit_coe_tan.npy')
-        fitcoe2_p_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        fitcoe1_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te1&Te2_error-plus/fit_coe_tan.npy')
+        fitcoe2_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        fitcoe1_m_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te1&T2 error-minus\fit_coe_tan.npy')
-        fitcoe2_m_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te1&T2 error-minus\fit_coe2_tan.npy')
+        fitcoe1_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te1&T2_error-minus/fit_coe_tan.npy')
+        fitcoe2_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te1&T2_error-minus/fit_coe2_tan.npy')
         
         
-        fitcoe3_p_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te3 error-plus\fit_coe3_tan.npy')
+        fitcoe3_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te3_error-plus/fit_coe3_tan.npy')
 
-        fitcoe3_m_load = np.load(r'mean value and uncertainty - shots-19004-20470\Te3 error-minus\fit_coe3_tan.npy')
+        fitcoe3_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty-shots-19004-20470/Te3_error-minus/fit_coe3_tan.npy')
          
         
         
@@ -478,35 +480,35 @@ def axuv_Te_with_error(shot):
         # Ratio3=axuv_my22_sig/axuv_my13_sig
         
         
-        #fitcoe1_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\mean values\fit_coe_tan.npy')
-        #fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\mean values\fit_coe2_tan.npy')
-        #fitcoe3_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\mean values\fit_coe3_tan.npy')
+        #fitcoe1_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/mean_values/fit_coe_tan.npy')
+        #fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/mean_values/fit_coe2_tan.npy')
+        #fitcoe3_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/mean_values/fit_coe3_tan.npy')
         
-        #fitcoe1_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&Te2 error-plus\fit_coe_tan.npy')
-        #fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        #fitcoe1_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&Te2_error-plus/fit_coe_tan.npy')
+        #fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        #fitcoe1_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&T2 error-minus\fit_coe_tan.npy')
-        #fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&T2 error-minus\fit_coe2_tan.npy')
+        #fitcoe1_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&T2_error-minus/fit_coe_tan.npy')
+        #fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&T2_error-minus/fit_coe2_tan.npy')
         
         
-        #fitcoe3_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te3 error-plus\fit_coe3_tan.npy')
+        #fitcoe3_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te3_error-plus/fit_coe3_tan.npy')
 
-        #fitcoe3_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te3 error-minus\fit_coe3_tan.npy')
+        #fitcoe3_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te3_error-minus/fit_coe3_tan.npy')
          
-        fitcoe1_load = np.load(r'mean value and uncertainty\mean values\fit_coe_tan.npy')
-        fitcoe2_load = np.load(r'mean value and uncertainty\mean values\fit_coe2_tan.npy')
-        fitcoe3_load = np.load(r'mean value and uncertainty\mean values\fit_coe3_tan.npy')
+        fitcoe1_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/mean_values/fit_coe_tan.npy')
+        fitcoe2_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/mean_values/fit_coe2_tan.npy')
+        fitcoe3_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/mean_values/fit_coe3_tan.npy')
         
-        fitcoe1_p_load = np.load(r'mean value and uncertainty\Te1&Te2 error-plus\fit_coe_tan.npy')
-        fitcoe2_p_load = np.load(r'mean value and uncertainty\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        fitcoe1_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&Te2_error-plus/fit_coe_tan.npy')
+        fitcoe2_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        fitcoe1_m_load = np.load(r'mean value and uncertainty\Te1&T2 error-minus\fit_coe_tan.npy')
-        fitcoe2_m_load = np.load(r'mean value and uncertainty\Te1&T2 error-minus\fit_coe2_tan.npy')
+        fitcoe1_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&T2_error-minus/fit_coe_tan.npy')
+        fitcoe2_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&T2_error-minus/fit_coe2_tan.npy')
         
         
-        fitcoe3_p_load = np.load(r'mean value and uncertainty\Te3 error-plus\fit_coe3_tan.npy')
+        fitcoe3_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te3_error-plus/fit_coe3_tan.npy')
 
-        fitcoe3_m_load = np.load(r'mean value and uncertainty\Te3 error-minus\fit_coe3_tan.npy')
+        fitcoe3_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te3_error-minus/fit_coe3_tan.npy')
         # AXUV_Te from mylar filter 12.4/6.2
         
         #tebeta=1.2
@@ -652,20 +654,21 @@ def axuv_Te_with_error(shot):
         #-----new coefficient after fixing the error in the code
         
         
-        # fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\mean values\fit_coe2_tan.npy')
+        # fitcoe2_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/mean_values/fit_coe2_tan.npy')
         
-        # fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        # fitcoe2_p_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        # fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty\Te1&T2 error-minus\fit_coe2_tan.npy')
+        # fitcoe2_m_load = np.load(r'C:\Users\xiande.feng\Downloads\PI3 plasma data analysis\PI3 AXUV_Te analysis\20240806\mean value and uncertainty/Te1&T2_error-minus/fit_coe2_tan.npy')
         
+        print(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/mean_values/fit_coe2_tan.npy')
 
-        fitcoe2_load = np.load(r'mean value and uncertainty\mean values\fit_coe2_tan.npy')
+
+        fitcoe2_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/mean_values/fit_coe2_tan.npy')
         
-        fitcoe2_p_load = np.load(r'mean value and uncertainty\Te1&Te2 error-plus\fit_coe2_tan.npy')
+        fitcoe2_p_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&Te2_error-plus/fit_coe2_tan.npy')
          
-        fitcoe2_m_load = np.load(r'mean value and uncertainty\Te1&T2 error-minus\fit_coe2_tan.npy')
+        fitcoe2_m_load = np.load(os.environ['AURORA_REPOS'] + r'/BH_axuv_Te/mean_value_and_uncertainty/Te1&T2_error-minus/fit_coe2_tan.npy')
         
-
 
         
         
@@ -702,7 +705,6 @@ def axuv_Te_with_error(shot):
 
         Te2_p_uncertainty=np.sqrt(Te2_p_uncer_filter**2+Te2_std_profile**2)
         Te2_m_uncertainty=np.sqrt(Te2_m_uncer_filter**2+Te2_std_profile**2)
-        
         
         
         save_data={'shot number':shot_n,

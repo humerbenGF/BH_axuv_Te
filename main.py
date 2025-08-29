@@ -15,6 +15,7 @@ def make_shot_list_edges(min_shot, max_shot):
 if __name__ == '__main__':
     
     shots_list = make_shot_list_edges(19718, 23016)
+    shots_list = [22605]
     
     for shot in shots_list:
         try:

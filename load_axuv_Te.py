@@ -4,7 +4,7 @@ import numpy as np
 
 import GF_data_tools as gdt
 
-from BH_axuv_Te.axuv_Te_function_with_uncertainty_gftools_noplot_v2_202408 import axuv_Te_with_error
+from BH_axuv_Te.axuv_Te_function_with_uncertainty_gftools_noplot_v2_202408 import axuv_Te_with_error    # type: ignore
 
 def load_axuv_Te_data(shot_number):
     try:
@@ -29,6 +29,7 @@ def load_axuv_Te_data(shot_number):
         print(f"Calculating AXUV Te for Shot {shot_number}")
         
         data = axuv_Te_with_error(shot_number)
+        print(data)
         
         for k in data.keys():
             if type(data[k]) == type(np.array([])):
